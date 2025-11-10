@@ -1,0 +1,29 @@
+graph TD
+    Candidate((Candidato))
+    Apply[Aplicación + CV]
+    Parser[Parser NLP]
+    AIEngine[Motor de IA<br/>Screening]
+    Scoring[Modelo Predictivo<br/>Match Score]
+    Pipeline[Pipeline Rankeado]
+    Recruiter((Reclutador))
+    Notification[Sistema de<br/>Notificaciones]
+
+    Candidate -->|1. Aplica con CV| Apply
+    Apply -->|2. Procesa documento| Parser
+    Parser -->|3. Datos estructurados| AIEngine
+    AIEngine -->|4. Evalúa contra<br/>requisitos del job| Scoring
+    Scoring -->|5. Genera Match Score<br/>0-100 + etiquetas| Pipeline
+    Pipeline -->|6. Rankea candidatos| Recruiter
+    Pipeline -->|7. Email confirmación| Notification
+    Notification -->|8. Comunicación| Candidate
+    Pipeline -->|9. Alerta candidatos<br/>alta calidad| Recruiter
+
+    Parser -.->|FA1: Formato no estándar| ManualQueue[Cola Manual]
+    Recruiter -.->|FA2: Ajusta score| Scoring
+    AIEngine -.->|FA3: Identifica candidato<br/>repetido| Recruiter
+
+    style AIEngine fill:#9B59B6,stroke:#6C3483,stroke-width:3px,color:#fff
+    style Scoring fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style Pipeline fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style Candidate fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style Recruiter fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff

@@ -1,0 +1,27 @@
+graph TD
+    Recruiter((Reclutador))
+    HM((Hiring Manager))
+    LTI[Sistema LTI]
+    AI[Motor de IA]
+    JobBoards[Job Boards<br/>LinkedIn, Indeed]
+
+    Recruiter -->|1. Crea nueva oferta| LTI
+    LTI -->|2. Solicita sugerencias| AI
+    AI -->|3. Genera habilidades,<br/>keywords, descripción| LTI
+    LTI -->|4. Preview multi-canal| Recruiter
+    Recruiter -->|5. Envía para aprobación| LTI
+    LTI -->|6. Notifica| HM
+    HM -->|7. Aprueba| LTI
+    LTI -->|8. Publica automáticamente| JobBoards
+    JobBoards -->|9. Confirmación| LTI
+    LTI -->|10. Notifica publicación exitosa<br/>+ links + tracking| Recruiter
+
+    LTI -->|FA1: Error en publicación| Recruiter
+    AI -.->|FA2: Generación completa<br/>de descripción| LTI
+    LTI -.->|FA3: Publicación programada| JobBoards
+
+    style LTI fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style AI fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#fff
+    style JobBoards fill:#E67E22,stroke:#D35400,stroke-width:2px,color:#fff
+    style Recruiter fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style HM fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff

@@ -1,0 +1,56 @@
+C4Component
+    title Componente: Sistema de IA para Screening
+
+    Container_Boundary(api, "AI Screening Service Container") {
+        Component(apiController, "API Controller", "FastAPI", "Expone endpoints REST para parsing y scoring de candidatos")
+        Component(orchestrator, "Screening Orchestrator", "Python", "Coordina el flujo de trabajo de screening end-to-end")
+        Component(parser, "CV Parser Component", "Python + spaCy", "Extrae información estructurada de CVs usando NLP")
+        Component(matcher, "Skill Matcher Component", "Python + sklearn", "Compara skills del candidato vs requisitos del job con similitud semántica")
+        Component(scorer, "Predictive Scorer", "Python + TensorFlow", "Genera Match Score usando modelo ML entrenado")
+        Component(tagger, "Auto Tagger", "Python", "Asigna etiquetas inteligentes basadas en reglas y ML")
+        Component(feedback, "Feedback Collector", "Python", "Registra decisiones de reclutadores para reentrenamiento")
+        Component(trainer, "Model Trainer", "Python + MLflow", "Pipeline de reentrenamiento de modelos con nuevos datos")
+    }
+
+    Container_Boundary(ext, "Servicios Externos") {
+        Component(llmAPI, "LLM API Client", "Python", "Cliente para OpenAI GPT-4 / Claude para análisis cualitativo")
+        Component(ocrAPI, "OCR Service", "AWS Textract", "Extracción de texto de PDFs complejos e imágenes")
+    }
+
+    ContainerDb(models, "Model Registry", "MLflow + S3", "Almacena versiones de modelos ML entrenados")
+    ContainerDb(features, "Feature Store", "PostgreSQL", "Almacena features calculadas de candidatos para serving rápido")
+    ContainerDb(training, "Training Data Store", "S3", "Dataset histórico de CVs, jobs y outcomes para entrenamiento")
+
+    ContainerQueue(queue, "Processing Queue", "SQS", "Cola de trabajos de screening para procesamiento asíncrono")
+
+    Container(appService, "Applications Service", "Node.js", "Gestiona aplicaciones de candidatos")
+    Container(jobService, "Jobs Service", "Node.js", "Gestiona ofertas de trabajo y requisitos")
+    ContainerDb(mainDB, "Main Database", "PostgreSQL", "Base de datos principal de aplicaciones y candidatos")
+
+    Rel(appService, queue, "Envía evento", "NewApplicationCreated")
+    Rel(queue, apiController, "Consume mensaje", "HTTP/JSON")
+    Rel(apiController, orchestrator, "Invoca screening", "Python function")
+
+    Rel(orchestrator, parser, "1. Parsea CV", "Python function")
+    Rel(parser, ocrAPI, "Extrae texto si es PDF complejo", "API call")
+    Rel(parser, llmAPI, "Usa LLM para parsing de formato no estándar", "API call")
+
+    Rel(orchestrator, matcher, "2. Compara skills", "Python function")
+    Rel(matcher, jobService, "Obtiene requisitos del job", "REST API")
+
+    Rel(orchestrator, scorer, "3. Genera score", "Python function")
+    Rel(scorer, models, "Carga modelo entrenado", "S3 download")
+    Rel(scorer, features, "Guarda features calculadas", "SQL INSERT")
+
+    Rel(orchestrator, tagger, "4. Asigna tags", "Python function")
+
+    Rel(orchestrator, appService, "5. Actualiza application con resultados", "REST API")
+    Rel(appService, mainDB, "Persiste match_score y ai_analysis", "SQL UPDATE")
+
+    Rel(feedback, appService, "Escucha eventos de decisiones", "Event subscription")
+    Rel(feedback, training, "Acumula training data", "S3 write")
+
+    Rel(trainer, training, "Lee dataset histórico", "S3 read")
+    Rel(trainer, models, "Registra nuevo modelo", "MLflow API")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

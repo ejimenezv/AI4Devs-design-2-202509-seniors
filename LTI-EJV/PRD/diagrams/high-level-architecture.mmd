@@ -1,0 +1,122 @@
+graph TB
+    subgraph "Usuarios"
+        Recruiter[Reclutador<br/>Web/Mobile]
+        HM[Hiring Manager<br/>Web/Mobile]
+        Candidate[Candidato<br/>Career Site]
+    end
+
+    subgraph "Capa de Presentación"
+        WebApp[Web App<br/>React + Next.js]
+        MobileApp[Mobile Apps<br/>React Native]
+        CareerSite[Career Site<br/>Next.js SSR]
+    end
+
+    subgraph "CDN & Load Balancing"
+        CDN[CloudFront CDN]
+        LB[Application Load<br/>Balancer]
+    end
+
+    subgraph "API Gateway Layer"
+        APIGateway[API Gateway<br/>Kong/AWS]
+        Auth[Auth Service<br/>JWT + OAuth]
+    end
+
+    subgraph "Microservicios Core"
+        JobsService[Jobs Service<br/>Node.js]
+        CandidatesService[Candidates Service<br/>Node.js]
+        ApplicationsService[Applications Service<br/>Node.js]
+        InterviewService[Interview Management<br/>Node.js]
+        NotificationsService[Notifications Service<br/>Node.js]
+        AnalyticsService[Analytics Service<br/>Go]
+    end
+
+    subgraph "Servicios de IA"
+        AIService[AI Screening Service<br/>Python + FastAPI]
+        MLModels[ML Models<br/>TensorFlow Serving]
+        LLMAPIs[LLM APIs<br/>OpenAI/Claude]
+    end
+
+    subgraph "Integraciones"
+        IntegrationsService[Integrations Service<br/>Node.js]
+        JobBoards[Job Boards APIs<br/>LinkedIn, Indeed]
+        Calendars[Calendar APIs<br/>Google, Outlook]
+        VideoConf[Video APIs<br/>Zoom, Teams]
+        HRIS[HRIS APIs<br/>Workday, BambooHR]
+    end
+
+    subgraph "Capa de Datos"
+        PostgreSQL[(PostgreSQL<br/>Primary DB)]
+        MongoDB[(MongoDB<br/>Parsed Resumes)]
+        Redis[(Redis<br/>Cache & Sessions)]
+        Elasticsearch[(Elasticsearch<br/>Search Engine)]
+        S3[(S3<br/>CVs & Docs)]
+    end
+
+    subgraph "Message Queue"
+        Queue[RabbitMQ/SQS<br/>Event Bus]
+    end
+
+    subgraph "Observability"
+        Monitoring[Monitoring<br/>Datadog]
+        Logging[Logging<br/>ELK Stack]
+    end
+
+    Recruiter --> WebApp
+    HM --> WebApp
+    Recruiter --> MobileApp
+    Candidate --> CareerSite
+
+    WebApp --> CDN
+    MobileApp --> CDN
+    CareerSite --> CDN
+    CDN --> LB
+    LB --> APIGateway
+
+    APIGateway --> Auth
+    APIGateway --> JobsService
+    APIGateway --> CandidatesService
+    APIGateway --> ApplicationsService
+    APIGateway --> InterviewService
+    APIGateway --> NotificationsService
+    APIGateway --> AnalyticsService
+
+    ApplicationsService --> AIService
+    AIService --> MLModels
+    AIService --> LLMAPIs
+    AIService --> Queue
+
+    JobsService --> IntegrationsService
+    InterviewService --> IntegrationsService
+    IntegrationsService --> JobBoards
+    IntegrationsService --> Calendars
+    IntegrationsService --> VideoConf
+    IntegrationsService --> HRIS
+
+    JobsService --> PostgreSQL
+    CandidatesService --> PostgreSQL
+    ApplicationsService --> PostgreSQL
+    InterviewService --> PostgreSQL
+    CandidatesService --> MongoDB
+
+    JobsService --> Redis
+    CandidatesService --> Redis
+
+    CandidatesService --> Elasticsearch
+    JobsService --> Elasticsearch
+
+    ApplicationsService --> S3
+    CandidatesService --> S3
+
+    NotificationsService --> Queue
+    AIService --> Queue
+    AnalyticsService --> Queue
+
+    JobsService -.-> Monitoring
+    ApplicationsService -.-> Monitoring
+    AIService -.-> Logging
+
+    style APIGateway fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#fff
+    style AIService fill:#9B59B6,stroke:#6C3483,stroke-width:3px,color:#fff
+    style PostgreSQL fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style Queue fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff
+    style IntegrationsService fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff

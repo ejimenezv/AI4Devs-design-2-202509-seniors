@@ -1,0 +1,84 @@
+graph TB
+    subgraph "PROBLEMA"
+        P1["1. Procesos de reclutamiento<br/>lentos y manuales"]
+        P2["2. Dificultad para identificar<br/>candidatos de calidad"]
+        P3["3. Falta de colaboración<br/>entre equipos de HR"]
+    end
+
+    subgraph "SEGMENTOS DE CLIENTES"
+        C1["Early Adopters:<br/>• Startups tech 50-500 empleados<br/>• Scale-ups en crecimiento rápido"]
+        C2["Clientes objetivo:<br/>• Empresas medianas tech-forward<br/>• Departamentos HR innovadores"]
+    end
+
+    subgraph "PROPUESTA ÚNICA DE VALOR"
+        UVP["Reduce el tiempo de contratación<br/>en 60% con IA que identifica<br/>automáticamente los mejores<br/>candidatos y automatiza<br/>tareas repetitivas"]
+    end
+
+    subgraph "SOLUCIÓN"
+        S1["1. Screening automático con IA"]
+        S2["2. Colaboración en tiempo real"]
+        S3["3. Automatización de workflows"]
+    end
+
+    subgraph "CANALES"
+        CH1["• Marketing digital (SEM/SEO)"]
+        CH2["• LinkedIn y redes sociales"]
+        CH3["• Eventos HR y demos"]
+        CH4["• Partnerships con consultoras"]
+    end
+
+    subgraph "FLUJOS DE INGRESOS"
+        R1["• SaaS subscripción mensual<br/>  (€49-299/usuario/mes)"]
+        R2["• Plan Enterprise con<br/>  custom pricing"]
+        R3["• Add-ons premium:<br/>  IA avanzada, integraciones"]
+    end
+
+    subgraph "ESTRUCTURA DE COSTES"
+        CO1["Costes fijos:<br/>• Equipo desarrollo (60%)<br/>• Infraestructura cloud (15%)<br/>• Sales y marketing (20%)"]
+        CO2["Costes variables:<br/>• API calls de IA<br/>• Almacenamiento<br/>• Customer support"]
+    end
+
+    subgraph "MÉTRICAS CLAVE"
+        M1["• MRR (Monthly Recurring Revenue)"]
+        M2["• CAC (Customer Acquisition Cost)"]
+        M3["• Churn rate < 5% mensual"]
+        M4["• NPS > 50"]
+        M5["• Time-to-value < 30 días"]
+    end
+
+    subgraph "VENTAJA ESPECIAL"
+        UA1["• Motor de IA propietario<br/>  entrenado en millones<br/>  de procesos de contratación"]
+        UA2["• Network effects: cuantos<br/>  más datos, mejor el modelo"]
+        UA3["• First-mover en IA<br/>  generativa para ATS"]
+    end
+
+    P1 --> UVP
+    P2 --> UVP
+    P3 --> UVP
+    UVP --> S1
+    UVP --> S2
+    UVP --> S3
+    S1 --> C1
+    S2 --> C1
+    C1 --> CH1
+    C2 --> CH1
+    CH1 --> R1
+    R1 --> M1
+    CO1 --> M2
+    UA1 --> M4
+
+    style UVP fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#fff
+    style P1 fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style P2 fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style P3 fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style C1 fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff
+    style C2 fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff
+    style S1 fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style S2 fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style S3 fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style R1 fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff
+    style R2 fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff
+    style R3 fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff
+    style UA1 fill:#8E44AD,stroke:#6C3483,stroke-width:2px,color:#fff
+    style UA2 fill:#8E44AD,stroke:#6C3483,stroke-width:2px,color:#fff
+    style UA3 fill:#8E44AD,stroke:#6C3483,stroke-width:2px,color:#fff

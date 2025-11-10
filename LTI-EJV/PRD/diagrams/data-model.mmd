@@ -1,0 +1,203 @@
+erDiagram
+    COMPANY ||--o{ USER : employs
+    COMPANY ||--o{ JOB : posts
+    COMPANY ||--o{ DEPARTMENT : has
+    COMPANY {
+        UUID id PK
+        VARCHAR name
+        VARCHAR industry
+        VARCHAR size
+        VARCHAR website
+        TEXT logo_url
+        TIMESTAMP created_at
+        VARCHAR subscription_tier
+        BOOLEAN is_active
+    }
+
+    USER ||--o{ JOB : owns
+    USER ||--o{ INTERVIEW : conducts
+    USER ||--o{ COMMENT : writes
+    USER ||--o{ SCORECARD : submits
+    USER {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR email
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR role
+        JSON permissions
+        TEXT avatar_url
+        TIMESTAMP last_login
+        BOOLEAN is_active
+    }
+
+    DEPARTMENT ||--o{ JOB : has
+    DEPARTMENT {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR name
+        UUID manager_id FK
+        INTEGER headcount
+    }
+
+    JOB ||--o{ APPLICATION : receives
+    JOB ||--o{ INTERVIEW_TEMPLATE : defines
+    JOB {
+        UUID id PK
+        UUID company_id FK
+        UUID department_id FK
+        UUID hiring_manager_id FK
+        VARCHAR title
+        TEXT description
+        TEXT requirements
+        JSON required_skills
+        JSON nice_to_have_skills
+        VARCHAR location
+        VARCHAR employment_type
+        INTEGER min_salary
+        INTEGER max_salary
+        VARCHAR status
+        DATE posted_date
+        DATE close_date
+        INTEGER target_hires
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    CANDIDATE ||--o{ APPLICATION : submits
+    CANDIDATE ||--o{ CANDIDATE_SKILL : has
+    CANDIDATE {
+        UUID id PK
+        VARCHAR email
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR phone
+        VARCHAR linkedin_url
+        TEXT resume_url
+        JSON parsed_resume
+        TEXT current_company
+        TEXT current_title
+        INTEGER years_experience
+        VARCHAR location
+        VARCHAR work_authorization
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    APPLICATION ||--o{ INTERVIEW : schedules
+    APPLICATION ||--o{ COMMENT : receives
+    APPLICATION ||--o{ STATUS_HISTORY : tracks
+    APPLICATION {
+        UUID id PK
+        UUID job_id FK
+        UUID candidate_id FK
+        VARCHAR source
+        VARCHAR current_stage
+        DECIMAL match_score
+        JSON ai_analysis
+        JSON tags
+        DATE applied_date
+        DATE last_activity_date
+        VARCHAR disposition
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    CANDIDATE_SKILL {
+        UUID id PK
+        UUID candidate_id FK
+        VARCHAR skill_name
+        VARCHAR proficiency_level
+        INTEGER years_experience
+        BOOLEAN is_verified
+    }
+
+    INTERVIEW ||--o{ SCORECARD : generates
+    INTERVIEW ||--|{ INTERVIEW_PARTICIPANT : has
+    INTERVIEW {
+        UUID id PK
+        UUID application_id FK
+        VARCHAR interview_type
+        DATETIME scheduled_time
+        INTEGER duration_minutes
+        VARCHAR location
+        TEXT video_link
+        VARCHAR status
+        TEXT calendar_event_id
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    INTERVIEW_TEMPLATE {
+        UUID id PK
+        UUID job_id FK
+        VARCHAR interview_type
+        INTEGER duration_minutes
+        JSON scorecard_template
+        TEXT guidelines
+        INTEGER sequence_order
+    }
+
+    USER ||--o{ INTERVIEW_PARTICIPANT : participates
+    INTERVIEW_PARTICIPANT {
+        UUID id PK
+        UUID interview_id FK
+        UUID user_id FK
+        VARCHAR role
+        BOOLEAN attendance_confirmed
+    }
+
+    SCORECARD {
+        UUID id PK
+        UUID interview_id FK
+        UUID submitted_by_user_id FK
+        JSON ratings
+        TEXT qualitative_feedback
+        VARCHAR recommendation
+        TEXT concerns
+        TEXT highlights
+        TIMESTAMP submitted_at
+    }
+
+    COMMENT {
+        UUID id PK
+        UUID application_id FK
+        UUID author_id FK
+        TEXT content
+        JSON mentions
+        BOOLEAN is_internal
+        TIMESTAMP created_at
+    }
+
+    STATUS_HISTORY {
+        UUID id PK
+        UUID application_id FK
+        VARCHAR from_stage
+        VARCHAR to_stage
+        UUID changed_by_user_id FK
+        TEXT reason
+        TIMESTAMP changed_at
+    }
+
+    JOB_POSTING ||--|| JOB : represents
+    JOB_POSTING {
+        UUID id PK
+        UUID job_id FK
+        VARCHAR platform
+        TEXT platform_job_id
+        VARCHAR status
+        TIMESTAMP posted_at
+        INTEGER views_count
+        INTEGER applies_count
+    }
+
+    NOTIFICATION ||--|| USER : targets
+    NOTIFICATION {
+        UUID id PK
+        UUID user_id FK
+        VARCHAR type
+        TEXT content
+        JSON metadata
+        BOOLEAN is_read
+        TIMESTAMP created_at
+    }

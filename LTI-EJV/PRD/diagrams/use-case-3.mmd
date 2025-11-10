@@ -1,0 +1,40 @@
+graph TD
+    Recruiter((Reclutador))
+    LTI[Sistema LTI<br/>Scheduling]
+    Calendar[APIs Calendario<br/>Google/Outlook]
+    Video[API Video<br/>Zoom/Teams]
+    Interviewers((Entrevistadores<br/>1..n))
+    Candidate((Candidato))
+    HM((Hiring Manager))
+    Scorecard[Scorecards<br/>Colaborativos]
+    Decision[Motor de<br/>Decisiones]
+
+    Recruiter -->|1. Schedule Interview| LTI
+    LTI -->|2. Consulta disponibilidad| Calendar
+    Calendar -->|3. Slots disponibles| LTI
+    Recruiter -->|4. Selecciona slot| LTI
+    LTI -->|5. Crea videollamada| Video
+    LTI -->|6. Envía invitaciones| Interviewers
+    LTI -->|6. Envía invitación| Candidate
+    LTI -->|7. Recordatorios automáticos| Interviewers
+    LTI -->|7. Recordatorios automáticos| Candidate
+
+    Interviewers -->|8. Completa scorecard<br/>post-entrevista| Scorecard
+    Scorecard -->|9. Agregación de feedback| HM
+    HM -->|10. Revisa evaluaciones<br/>consolidadas| Decision
+    HM -->|11. @menciones para<br/>discusión colaborativa| Interviewers
+    Interviewers -->|12. Responde y discute| HM
+    HM -->|13. Decisión final<br/>Advance/Offer/Reject| Decision
+    Decision -->|14. Actualiza pipeline<br/>+ notifica candidato| Candidate
+
+    Calendar -.->|FA1: No slots disponibles| Recruiter
+    Candidate -.->|FA2: Solicita cambio<br/>de horario| LTI
+    Scorecard -.->|FA3: Evaluaciones<br/>divergentes| HM
+    Candidate -.->|FA4: No-show| LTI
+
+    style LTI fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style Scorecard fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#fff
+    style Decision fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style HM fill:#F39C12,stroke:#D68910,stroke-width:3px,color:#fff
+    style Interviewers fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    style Candidate fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff
